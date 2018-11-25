@@ -4,16 +4,19 @@
 
 ## Wav to mp3
 
-    for file in *.wav; do lame --preset standard "$file" "${file%.*}".mp3; done
+    $ for file in *.wav; do lame --preset standard "$file" "${file%.*}".mp3; done
 
+## Re-encode for streaming [CBR]
 
-    for file in *.*; do lame --preset cbr 112 "$file" "${file%.*}".mp3; done
+    $ lame --preset cbr 112 SONG.mp3 SONG.mp3
 
-    lame --preset cbr 112 03-Ella-orig.mp3 03-Ella.mp3
+## ID3 Tags con id3lib
 
+### Install
 
+    $ brew install id3lib
 
-## ID3 Tags
+Help: `id3lib -h`
 
     Usage: id3tag [OPTIONS]... [FILES]...
     -h         --help            Print help and exit
@@ -32,20 +35,27 @@
     -w         --warning         Turn on warnings (for debugging) (default=off)
     -n         --notice          Turn on notices (for debugging) (default=off)
 
-### Ejecutar:
+### Usar id3lib
 
-POP es genero [13](https://en.wikipedia.org/wiki/ID3#ID3v2):
+Initialize:
 
     for file in *.mp3; do id3tag $file; done
 
-    for file in *.mp3; do id3tag --artist=MARIA $file; done
-    for file in *.mp3; do id3tag --album="Numero UNO" $file; done
-    for file in *.mp3; do id3tag --song="${file%.*}" $file; done
-    for file in *.mp3; do id3tag --year=2018 $file; done
+Usual Tags:
 
-    
+    for file in *.mp3; do id3tag --artist=ARTIST $file; done
+    for file in *.mp3; do id3tag --album="ALBUM NAME" $file; done
+    for file in *.mp3; do id3tag --song="${file%.*}" $file; done
+    for file in *.mp3; do id3tag --year=YEAR $file; done
+    for file in *.mp3; do id3tag --desc="http://band-name.com/" $file; done
+
+Special Tags:
+
+POP es genero [13](https://en.wikipedia.org/wiki/ID3#ID3v2):
+
     for file in *.mp3; do id3tag --genre=13 $file; done
-    for file in *.mp3; do id3tag --desc="http://mariabanda.com/" $file; done
+
+Track Numbers:
 
     a=0;for file in *.mp3; do a=`expr $a + 1`;id3tag --track="${a}" $file; done
-    for file in *.mp3; do id3tag --total=10 $file; done
+    for file in *.mp3; do id3tag --total=TOTAL_SONGS $file; done

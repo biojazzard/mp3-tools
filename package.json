@@ -1,0 +1,14 @@
+{
+  "name": "mp3-tools",
+  "version": "1.0.0",
+  "description": "Node mp3 & ID3 tools",
+  "main": "index.js",
+  "repository": "git@github.com:biojazzard/mp3-tools.git",
+  "author": "Alfredo Llanos",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "musicmetadata": "^2.0.5",
+    "read-id3-tags": "^1.1.0"
+  }
+}

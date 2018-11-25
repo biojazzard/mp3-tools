@@ -39,23 +39,23 @@ Help: `id3lib -h`
 
 Initialize:
 
-    for file in *.mp3; do id3tag $file; done
+    $ for file in *.mp3; do id3tag $file; done
 
 Usual Tags:
 
-    for file in *.mp3; do id3tag --artist=ARTIST $file; done
-    for file in *.mp3; do id3tag --album="ALBUM NAME" $file; done
-    for file in *.mp3; do id3tag --song="${file%.*}" $file; done
-    for file in *.mp3; do id3tag --year=YEAR $file; done
-    for file in *.mp3; do id3tag --desc="http://band-name.com/" $file; done
+    $ for file in *.mp3; do id3tag --artist=ARTIST $file; done
+    $ for file in *.mp3; do id3tag --album="ALBUM NAME" $file; done
+    $ for file in *.mp3; do id3tag --song="${file%.*}" $file; done
+    $ for file in *.mp3; do id3tag --year=YEAR $file; done
+    $ for file in *.mp3; do id3tag --desc="http://band-name.com/" $file; done
 
 Special Tags:
 
 POP es genero [13](https://en.wikipedia.org/wiki/ID3#ID3v2):
 
-    for file in *.mp3; do id3tag --genre=13 $file; done
+    $ for file in *.mp3; do id3tag --genre=13 $file; done
 
 Track Numbers:
 
-    a=0;for file in *.mp3; do a=`expr $a + 1`;id3tag --track="${a}" $file; done
-    for file in *.mp3; do id3tag --total=TOTAL_SONGS $file; done
+    $ a=0;for file in *.mp3; do a=`expr $a + 1`;id3tag --track="${a}" $file; done
+    $ for file in *.mp3; do id3tag --total=TOTAL_SONGS $file; done

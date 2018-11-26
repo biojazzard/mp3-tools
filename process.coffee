@@ -97,7 +97,7 @@ processIt = (elem, ind, list) ->
 
   spinner.spinner = cliSpinners.dots
   spinner.color = 'yellow'
-  spinner.text = 'Loading rainbows' + elem
+  spinner.text = 'Your crunchy mp3: ' + elem
   spinner.start()
 
   audio =

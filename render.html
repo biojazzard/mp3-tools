@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<xmp style="display:none;">
+# Render
+
+## Use Case
+
+You want to do a quick rendering of your litcoffee masterpiece, 
+potentially with a custom template and stylesheet.
+
+Common enough scenario. 
+
+## Example
+
+> coffee render.coffee.md render.coffee.md | browser
+
+## Code
+
+  fs = require 'fs'
+  coffee = require 'coffeescript'
+
+Yep, we require coffee itself.
+
+Pull in optimist for command-line argument handling.
+
+  argv = require('optimist')
+    .default('template', 'html.cst')
+    .default('style', 'style.css')
+    .alias('t', 'template')
+    .alias('s', 'style')
+    #.demand('f')
+    #.alias('f', 'file')
+    #.describe('f', 'Load a file')
+    .argv
+
+  console.log 'argv', argv
+  
+OK, let's read and render.
+
+  file = argv.file
+
+  read = (file) -> fs.readFileSync file, 'utf8'
+  
+  print = console.log
+
+  render = (file, data) -> 
+    text = read(file)
+      .toString()
+      .replace(/\n/g, '\\n')
+      .replace(/"/g, '\\"')
+  
+    template = coffee.eval '(data) -> "' + text + '"'
+    print template data
+
+  for file in argv._ when file.match /\.(litcoffee|markdown|md)/i
+    data =
+      md: read file
+      css: read argv.style
+    render argv.template, data</xmp>
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+<style>@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:200,400,600);
+
+.navbar { display: none }
+.container { width: 600px; }
+
+body {
+  font-family: "Source Code Pro", sans-serif;
+  padding: 0 0 0 50px;
+  width: 600px;
+  color: #555;
+  background: whiteSmoke;
+}
+
+h1 {
+  font-size: 64px;
+  font-weight: 200;
+  letter-spacing: -6px;
+  margin: .8em 0 .8em 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h2 {
+  font-size: 100%;
+  margin-top: 2em;
+}
+
+h1, h2 {
+  text-rendering: optimizeLegibility;
+}
+
+h2 a {
+  color: #ccc;
+  left: -20px;
+  position: absolute;
+  width: 740px;
+}
+
+h3, h4, h5 {
+  font-size: 100%;
+  font-weight: 400;
+  margin-top: .8em;
+}
+
+h3, h4 {
+  text-transform: uppercase;
+}
+
+h4 {
+  color: #AAA; 
+}
+
+footer {
+  font-size: small;
+  margin-top: 8em;
+}
+
+header aside {
+  margin-top: 80px;
+}
+
+header aside,
+footer aside {
+  text-align: right;
+}
+
+aside {
+  font-size: small;
+  right: 0;
+  position: absolute;
+  width: 180px;
+  color: #AAA; 
+}
+
+.attribution {
+  font-size: small;
+  margin-bottom: 2em;
+}
+
+i, cite, em, var, address, dfn {
+  font-style: normal;
+  border-bottom: 1px solid #CCC;
+}
+
+body > p, li > p {
+  line-height: 1.5em;
+}
+
+body > p {
+  width: 600px;
+}
+
+blockquote {
+  border-left: 4px solid #999
+}
+
+blockquote p {
+  width: 500px;
+  font-weight: normal;
+}
+
+li {
+  width: 500px;
+}
+
+a {
+  color: steelblue;
+}
+
+a:not(:hover) {
+  text-decoration: none;
+}
+
+pre, code, textarea {
+  border: 0px solid;
+  font-family: "Source Code Pro", monospace;
+  font-size: 100%;
+  color: #444;
+}
+
+code {
+  line-height: 1em;
+}</style>

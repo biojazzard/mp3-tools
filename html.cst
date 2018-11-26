@@ -1,0 +1,4 @@
+<!DOCTYPE html>
+<xmp style="display:none;">#{data.md}</xmp>
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+<style>#{data.css}</style>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<xmp style="display:none;"># Process Wav to mp3 Files
+
+  fs = require 'fs'
+  _ = require 'underscore'
+
+  Lame = require('node-lame').Lame;
+
+###
+# musicmetadata get ID3 Tags
+###
+  
+  mm = require 'musicmetadata'
+
+###
+# jsome Beautyful json
+###
+
+  jsome = require 'jsome'
+
+###
+# Spinners
+###
+
+  cliSpinners = require 'cli-spinners'
+
+###
+# Show Images in the cli.
+###
+
+  pictureTube = require('picture-tube')
+  tube = pictureTube()
+  tube.pipe(process.stdout)
+
+  fs.createReadStream('win.png').pipe(tube);
+
+###
+# Config
+###
+
+  config =
+    src: 'wav'
+    mp3: 'mp3'
+    cd: 'mp3-192'
+    artwork: 'artwork/artwork.png'
+
+  app =
+    msg:
+      success: ' | === > | File Created | OK'
+
+  audio = []
+  render = []
+
+  _log = (msg) ->
+    console.log msg
+
+  ora = require('ora');
+
+  spinner = ora('MP3 from Wav Files:::')
+
+  #spinner.start();
+
+###
+# Process It!.  
+###
+
+  audioFiles = fs.readdir config.src, (err, files) ->
+    throw err if err
+    _.each files, processFile
+    _.each files, processIt
+    #_.each files, _log
+
+  processFile = (elem, ind, list) ->
+    if elem == '.DS_Store'
+      list.splice ind, 1
+      #fileStats = fs.Stats config.src + '/' + file, (err, stats) ->
+
+  processIt = (elem, ind, list) ->
+
+    spinner.spinner = cliSpinners.dots
+    spinner.color = 'yellow'
+    spinner.text = 'Loading rainbows' + elem
+    spinner.start()
+
+    audio =
+      source: config.src + '/' + elem
+    render =
+      file: config.mp3 + '/' + elem + '.mp3'
+
+    title = elem.replace('.wav', '').replace(config.mp3 + '/', '')
+
+    encoder = new Lame
+      output: render.file
+      cbr: true
+      bitrate: 96
+      meta:
+        title: title
+        artist: "MARIA"
+        album: "Número UNO"
+        year: "2018"
+        track: ind + 1
+        genre: 13
+        artwork: config.artwork
+    .setFile audio.source
+      
+    encoder.encode().then ->
+      # Encoding finished
+      # Read ID3
+      fileStream = fs.createReadStream(encoder.progressedFilePath)
+
+      parser = mm fileStream, (err, metadata) ->
+        if err
+          throw err
+
+        ###
+        # Beautyful json with jsome
+        ### 
+        #jsome.level.show = false
+        #jsome metadata.title
+        
+        return
+
+Parar el Spinner:
+
+      spinner.stop()
+
+      return
+    .catch (error) ->
+      # Something went wrong
+      return
+</xmp>
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+<style>@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:200,400,600);
+
+.navbar { display: none }
+.container { width: 600px; }
+
+body {
+  font-family: "Source Code Pro", sans-serif;
+  padding: 0 0 0 50px;
+  width: 600px;
+  color: #555;
+  background: whiteSmoke;
+}
+
+h1 {
+  font-size: 64px;
+  font-weight: 200;
+  letter-spacing: -6px;
+  margin: .8em 0 .8em 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h2 {
+  font-size: 100%;
+  margin-top: 2em;
+}
+
+h1, h2 {
+  text-rendering: optimizeLegibility;
+}
+
+h2 a {
+  color: #ccc;
+  left: -20px;
+  position: absolute;
+  width: 740px;
+}
+
+h3, h4, h5 {
+  font-size: 100%;
+  font-weight: 400;
+  margin-top: .8em;
+}
+
+h3, h4 {
+  text-transform: uppercase;
+}
+
+h4 {
+  color: #AAA; 
+}
+
+footer {
+  font-size: small;
+  margin-top: 8em;
+}
+
+header aside {
+  margin-top: 80px;
+}
+
+header aside,
+footer aside {
+  text-align: right;
+}
+
+aside {
+  font-size: small;
+  right: 0;
+  position: absolute;
+  width: 180px;
+  color: #AAA; 
+}
+
+.attribution {
+  font-size: small;
+  margin-bottom: 2em;
+}
+
+i, cite, em, var, address, dfn {
+  font-style: normal;
+  border-bottom: 1px solid #CCC;
+}
+
+body > p, li > p {
+  line-height: 1.5em;
+}
+
+body > p {
+  width: 600px;
+}
+
+blockquote {
+  border-left: 4px solid #999
+}
+
+blockquote p {
+  width: 500px;
+  font-weight: normal;
+}
+
+li {
+  width: 500px;
+}
+
+a {
+  color: steelblue;
+}
+
+a:not(:hover) {
+  text-decoration: none;
+}
+
+pre, code, textarea {
+  border: 0px solid;
+  font-family: "Source Code Pro", monospace;
+  font-size: 100%;
+  color: #444;
+}
+
+code {
+  line-height: 1em;
+}</style>
